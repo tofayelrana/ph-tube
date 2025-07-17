@@ -53,11 +53,24 @@ const loadCategories = () => {
     .catch((error) => console.error("Error fetching categories:", error));
 };
 const loadVideos = () => {
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+  fetch("https://openapi.programming-hero.com/api/phero-tube/videos?title=")
     .then((res) => res.json())
     .then((data) => showVideos(data.videos))
     .catch((error) => console.error("Error fetching videos:", error));
 };
+
+// Add event listener for search input
+document.getElementById("search-input").addEventListener("keyup", (event) => {
+  const searchText = event.target.value.trim();
+  if (searchText.length > 0) {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
+      .then((res) => res.json())
+      .then((data) => showVideos(data.videos))
+      .catch((error) => console.error("Error fetching videos:", error));
+  } else {
+    loadVideos(); // Load all videos if search input is empty
+  }
+});
 // Create showCategories
 const showCategories = (data) => {
   const categoryContainer = document.getElementById("categories");
@@ -70,6 +83,29 @@ const showCategories = (data) => {
 };
 // Call the function to load categories
 loadCategories();
+// Load video details
+const loadDetails = async (videoId) => {
+  try {
+    const response = await fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`);
+    const data = await response.json();
+    showVideoDetails(data.video);
+  } catch (error) {
+    console.error("Error fetching video details:", error);
+  }
+};
+const showVideoDetails = (video) => {
+    const detailsContainer = document.getElementById("modal-content");
+    detailsContainer.innerHTML = `
+        <img
+            src="${video.thumbnail}"
+            alt="Thumbnail for ${video.title}"  class="w-full object-cover"/>
+        <p class="text-left font-bold mt-2">${video.description}</p>
+    `;
+    // way 1
+    // document.getElementById("showModalData").click();
+    // way 2
+    document.getElementById("customModal").showModal()
+}
 // Create showVideos
 const showVideos = (videos) => {
   const videoContainer = document.getElementById("videos");
@@ -107,6 +143,7 @@ const showVideos = (videos) => {
                 <p>${video.authors[0].profile_name}</p>
                 ${video.authors[0].verified ? `<img src="https://img.icons8.com/?size=100&id=D9RtvkuOe31p&format=png&color=000000" class="w-5 h-5 inline-block"/>` : ""}
                 </div>
+                <p><button onclick="loadDetails('${video.video_id}')" class="btn btn-sm btn-outline mt-2">Details</button></p>
             </div>
             
         </div>`;
