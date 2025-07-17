@@ -126,7 +126,7 @@ const showVideos = (videos) => {
         <figure class="h-[200px] relative">
             <img
             src="${video.thumbnail}"
-            alt="Thumbnail for ${video.title}"  class="w-full object-cover"/>
+            alt="Thumbnail for ${video.title}"  class="w-full h-full object-cover"/>
             ${video.others.views ? `<span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1 rounded">${video.others.views} views</span>` : ""}
             ${
                 video.others.posted_date ? `<span class="absolute bottom-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">${getTimeString(video.others.posted_date)}</span>` : ""
