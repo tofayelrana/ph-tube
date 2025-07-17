@@ -25,9 +25,12 @@ function getTimeString(time) {
 // Remove active class from all buttons
 const removeActiveClass = () => {
   const buttons = document.querySelectorAll(".category-btn");
-  buttons.forEach((button) => {
-    button.classList.remove("active");
-  });
+  // buttons.forEach((button) => {
+  //   button.classList.remove("active");
+  // });
+  for(let btn of buttons) {
+    btn.classList.remove("active");
+  }
 }
 // Load videos for a specific category
 const loadCategoryVideos = (id) => {
@@ -73,7 +76,9 @@ const showVideos = (videos) => {
     videoContainer.innerHTML = ""; // Clear previous videos
     if (videos.length === 0) {
         videoContainer.classList.remove("grid");
-        videoContainer.innerHTML = `<p class="text-center text-gray-500">No videos found.</p>`;
+        videoContainer.innerHTML = `
+        <div class="flex justify-center mb-[10px]"><img src="assets/Icon.png" alt="Placeholder image"></div>
+        <p class="text-center font-bold">No videos found.</p>`;
     }else {
         videoContainer.classList.add("grid");
     }
